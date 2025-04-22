@@ -8,7 +8,7 @@ var CryptoJS = require('crypto-js');
 /*PRUEBA MQTT*/
 const mqtt = require('mqtt')
 
-const url = 'localhost'
+const url = 'mqtt://localhost'
 
 const options = {
   // Clean session
@@ -18,22 +18,10 @@ const options = {
 
 const client  = mqtt.connect(url, options)
 client.on('connect', function () {
-  console.log('Connected')
-  // Subscribe to a topic
-  client.subscribe('test', function (err) {
-    if (!err) {
-      // Publish a message to a topic
-      client.publish('test', 'Hello mqtt')
-    }
+  console.log('Connected to mosquitto')
+  client.publish('test', 'Hello mqtt')
   })
-})
 
-// Receive messages
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
-})
 /*FIN PRUEBA MQTT*/
 
 
@@ -64,7 +52,10 @@ router.get('/record', function (req, res, next) {
 
 
 
-
+      client.publish('temperatura', req.body.temperatura)
+      client.publish('humedad', req.body.humedad)
+      client.publish('co2', req.body.co2)
+      client.publish('volatiles', req.body.volatiles)
   //res.render('index', { title: 'Express' });
   res.send("Saving: " + req.query.id_nodo + ';' + now.getTime() + ";" + req.query.temperatura + ";" + req.query.humedad + ";" + req.query.co2 + ";" + req.query.volatiles + " in: " + logfile_name);
 });
@@ -94,6 +85,7 @@ router.post('/record', function (req, res, next) {
         req.body.volatiles + "\r\n";
       append2file(logfile_name, content);
 
+
     } else if (err.code === 'ENOENT') {
       // Si el archivo no existe, creamos uno nuevo con una cabecera y luego agregamos los datos
       let content = 'id_nodo; timestamp; temperatura; humedad; CO2; volatiles\r\n' +
@@ -108,6 +100,10 @@ router.post('/record', function (req, res, next) {
       console.error('Ocurrió un error: ', err.code);
     }
   });
+      client.publish('temperatura', req.body.temperatura)
+      client.publish('humedad', req.body.humedad)
+      client.publish('co2', req.body.co2)
+      client.publish('volatiles', req.body.volatiles)
   res.send("Saving: " + req.body.id_nodo + ';' + now.getTime() + ";" + req.body.temperatura + ";" + req.body.humedad + ";" + req.body.co2 + ";" + req.body.volatiles + " in: " + logfile_name);
 });
 
