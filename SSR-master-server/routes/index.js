@@ -5,6 +5,38 @@ var fs = require('fs');
 var CryptoJS = require('crypto-js');
 
 
+/*PRUEBA MQTT*/
+const mqtt = require('mqtt')
+
+const url = 'localhost'
+
+const options = {
+  // Clean session
+  clean: true,
+  connectTimeout: 4000,
+}
+
+const client  = mqtt.connect(url, options)
+client.on('connect', function () {
+  console.log('Connected')
+  // Subscribe to a topic
+  client.subscribe('test', function (err) {
+    if (!err) {
+      // Publish a message to a topic
+      client.publish('test', 'Hello mqtt')
+    }
+  })
+})
+
+// Receive messages
+client.on('message', function (topic, message) {
+  // message is Buffer
+  console.log(message.toString())
+  client.end()
+})
+/*FIN PRUEBA MQTT*/
+
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Data-Logger' });
