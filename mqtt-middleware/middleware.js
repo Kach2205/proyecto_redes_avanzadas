@@ -1,4 +1,4 @@
-// middleware.js
+//// middleware.js
 const mqtt = require('mqtt');
 const express = require('express');
 const app = express();
@@ -6,8 +6,8 @@ const port = 3000;
 
 // Conexión a múltiples brokers
 const brokers = [
-    mqtt.connect('mqtt://localhost:8000'),
-    mqtt.connect('mqtt://localhost:8001') // si tienes dos brokers
+    mqtt.connect('mqtt://10.100.0.107:1883'),
+  //  mqtt.connect('mqtt://10.100.0.107:8001') // si tienes dos brokers
 ];
 
 // Suscribirse a un tópico
