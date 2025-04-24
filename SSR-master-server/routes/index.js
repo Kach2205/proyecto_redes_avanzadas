@@ -8,7 +8,7 @@ var CryptoJS = require('crypto-js');
 /*PRUEBA MQTT*/
 const mqtt = require('mqtt')
 
-const url = 'mqtt://localhost'
+const url = 'mqtt://localhost:3004'
 
 const options = {
   // Clean session
@@ -17,6 +17,14 @@ const options = {
 }
 
 const client  = mqtt.connect(url, options)
+
+//client.suscribe(['temperatura','humedad','co2','volatiles'], function(err){
+//	if(!err){
+//		console.log('Suscrito correctamente a los topics');
+//	}else{
+//		console.error('Error al suscribirse', err);
+//	}
+//};
 client.on('connect', function () {
   console.log('Connected to mosquitto')
   client.publish('test', 'Hello mqtt')
@@ -52,10 +60,10 @@ router.get('/record', function (req, res, next) {
 
 
 
-      client.publish('temperatura', req.body.temperatura)
-      client.publish('humedad', req.body.humedad)
-      client.publish('co2', req.body.co2)
-      client.publish('volatiles', req.body.volatiles)
+      client.publish('temperatura', req.query.temperatura)
+      client.publish('humedad', req.query.humedad)
+      client.publish('co2', req.query.co2)
+      client.publish('volatiles', req.query.volatiles)
   //res.render('index', { title: 'Express' });
   res.send("Saving: " + req.query.id_nodo + ';' + now.getTime() + ";" + req.query.temperatura + ";" + req.query.humedad + ";" + req.query.co2 + ";" + req.query.volatiles + " in: " + logfile_name);
 });
@@ -100,10 +108,11 @@ router.post('/record', function (req, res, next) {
       console.error('Ocurrió un error: ', err.code);
     }
   });
-      client.publish('temperatura', req.body.temperatura)
-      client.publish('humedad', req.body.humedad)
-      client.publish('co2', req.body.co2)
-      client.publish('volatiles', req.body.volatiles)
+
+      client.publish('temperatura', req.query.temperatura)
+      client.publish('humedad', req.query.humedad)
+      client.publish('co2', req.query.co2)
+      client.publish('volatiles', req.query.volatiles)
   res.send("Saving: " + req.body.id_nodo + ';' + now.getTime() + ";" + req.body.temperatura + ";" + req.body.humedad + ";" + req.body.co2 + ";" + req.body.volatiles + " in: " + logfile_name);
 });
 
