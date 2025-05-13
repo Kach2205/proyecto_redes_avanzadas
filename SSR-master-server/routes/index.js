@@ -59,7 +59,7 @@ router.get('/record', function (req, res, next) {
   });
 
 
-  const timestamp = now.getTime();
+  const timestamp = "2025";
 
   client.publish('temperatura', JSON.stringify({
       date: timestamp,
@@ -126,8 +126,8 @@ router.post('/record', function (req, res, next) {
     }
   });
 
-      const timestamp = now.getTime();
-  
+      const timestamp = new Date();
+
       client.publish('temperatura', JSON.stringify({
       date: timestamp,
       value: req.body.temperatura,
