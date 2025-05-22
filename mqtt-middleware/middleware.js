@@ -2,7 +2,7 @@
 const mqtt = require('mqtt');
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 2000;
 
 // Conexión a múltiples brokers
 const brokers = [
