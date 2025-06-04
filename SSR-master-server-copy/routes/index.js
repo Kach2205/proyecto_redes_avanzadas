@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var CryptoJS = require('crypto-js');
+var crate = require('crate');
 
 
 /*PRUEBA MQTT*/
@@ -58,12 +59,28 @@ router.get('/record', function (req, res, next) {
   });
 
 
+  const timestamp = "2025";
 
-
-      client.publish('temperatura', req.query.temperatura)
-      client.publish('humedad', req.query.humedad)
-      client.publish('co2', req.query.co2)
-      client.publish('volatiles', req.query.volatiles)
+  client.publish('temperatura', JSON.stringify({
+      date: timestamp,
+      value: req.query.temperatura,
+      sensor: "temperatura"
+  }));
+  client.publish('humedad', JSON.stringify({
+      date: timestamp,
+      value: req.query.humedad,
+      sensor: "humedad"
+  }));
+  client.publish('co2', JSON.stringify({
+      date: timestamp,
+      value: req.query.co2,
+      sensor: "co2"
+  }));
+  client.publish('volatiles', JSON.stringify({
+      date: timestamp,
+      value: req.query.volatiles,
+      sensor: "volatiles"
+  }));
   //res.render('index', { title: 'Express' });
   res.send("Saving: " + req.query.id_nodo + ';' + now.getTime() + ";" + req.query.temperatura + ";" + req.query.humedad + ";" + req.query.co2 + ";" + req.query.volatiles + " in: " + logfile_name);
 });
@@ -109,10 +126,28 @@ router.post('/record', function (req, res, next) {
     }
   });
 
-      client.publish('temperatura', req.query.temperatura)
-      client.publish('humedad', req.query.humedad)
-      client.publish('co2', req.query.co2)
-      client.publish('volatiles', req.query.volatiles)
+      const timestamp = new Date();
+
+      client.publish('temperatura', JSON.stringify({
+      date: timestamp,
+      value: req.body.temperatura,
+      sensor: "temperatura"
+}));
+      client.publish('humedad', JSON.stringify({
+      date: timestamp,
+      value: req.body.humedad,
+      sensor: "humedad"
+}));
+      client.publish('co2', JSON.stringify({
+      date: timestamp,
+      value: req.body.co2,
+      sensor: "co2"
+}));
+      client.publish('volatiles', JSON.stringify({
+      date: timestamp,
+      value: req.body.volatiles,
+      sensor: "volatiles"
+}));
   res.send("Saving: " + req.body.id_nodo + ';' + now.getTime() + ";" + req.body.temperatura + ";" + req.body.humedad + ";" + req.body.co2 + ";" + req.body.volatiles + " in: " + logfile_name);
 });
 
