@@ -1,0 +1,6 @@
+id_nodo; timestamp; temperatura; humedad; CO2; volatiles
+nodoPrueba2;1749046532224;15;40;72;50
+nodoPrueba2;1749046533099;15;40;72;50
+nodoPrueba2;1749046535419;15;40;72;50
+nodoPrueba2;1749048656203;15;40;72;50
+nodoPrueba2;1749048663362;15;40;72;50
